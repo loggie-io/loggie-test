@@ -1,0 +1,19 @@
+resources:
+  genfilesDeployment:
+    name: "loggie-genfiles"
+    namespace: "default"
+    image: <>
+    replicas: 1
+    dir: /tmp/log
+
+  k8sLoggie:
+    podName: loggie-d7nrc
+    namespace: loggie
+
+  elasticsearch:
+    address: ["http://elasticsearch-master.default.svc:9200"]
+    index: "log-e2e"
+
+cases:
+  fileToES:
+    searchESTimeout: 300s

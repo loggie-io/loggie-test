@@ -1,0 +1,4 @@
+dir: /tmp/log
+lineBytes: 1024
+lineCount: 100000
+fileCount: 8

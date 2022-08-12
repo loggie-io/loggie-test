@@ -1,0 +1,24 @@
+resources:
+  genfilesDeployment:
+    name: "loggie-genfiles"
+    namespace: "default"
+    image: <>
+    replicas: 2
+    dir: /tmp/log
+    fileCount: 10
+    lineCount: 10000
+    lineBytes: 1024
+
+  k8sLoggie:
+    namespace: "loggie"
+    podName: "loggie-78qgh"
+
+  elasticsearch:
+    index: "log-e2e"
+    namespace: default
+    service: elasticsearch-master
+
+cases:
+  alwaysReload:
+    interval: 30s # scale deploy interval
+    totalTime: 30m

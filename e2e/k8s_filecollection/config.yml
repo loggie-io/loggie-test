@@ -1,0 +1,32 @@
+# ---------- Prepare: ---------- ##
+# * Elasticsearch installed
+#   ```
+#   helm repo add elastic https://helm.elastic.co
+#   helm install elasticsearch elastic/elasticsearch --set replicas=1
+#   ```
+#
+#   make sure `elasticsearch.address` is reachable
+#   ```
+#   kubectl port-forward service/elasticsearch-master 9200:9200
+#   ```
+#
+# * Loggie Agent DaemonSet installed
+#
+# ------------------------------ ##
+resources:
+  genfilesDeployment:
+    name: "loggie-genfiles"
+    namespace: "default"
+    image: <>
+    replicas: 1
+    dir: /tmp/log
+    fileCount: 8
+    lineCount: 1000
+
+  elasticsearch:
+    address: ["http://elasticsearch-master.default.svc:9200"]
+    index: "log-e2e"
+
+cases:
+  fileToES:
+    searchESTimeout: 30s

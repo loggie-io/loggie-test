@@ -1,0 +1,33 @@
+resources:
+  genfiles:
+    dir: /tmp/log
+    fileCount: 8
+    lineCount: 1000
+
+  localLoggie:
+    # add cmd args of loggie: -config.pipeline=/tmp/pipelines/pipeline.yml
+    pipelinePath: /tmp/pipelines/
+    endpoint: "http://localhost:9196"
+
+  elasticsearch:
+    address: ["http://localhost:9200"]
+    index: "log-e2e"
+
+cases:
+  fileToES:
+    searchESTimeout: 30s
+    pipelines: |
+      pipelines:
+        - name: local
+          sources:
+            - type: file
+              name: demo
+              paths:
+                - /tmp/log/*.log
+              fields:
+                topic: "loggie"
+          sink:
+            type: elasticsearch
+            hosts: ["http://localhost:9200"]
+            index: "log-e2e"
+

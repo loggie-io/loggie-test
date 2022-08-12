@@ -1,0 +1,39 @@
+# ---------- Prepare: ---------- ##
+# * Elasticsearch installed
+#   ```
+#   helm repo add elastic https://helm.elastic.co
+#   helm install elasticsearch elastic/elasticsearch --set replicas=1
+#   ```
+#
+#   make sure `elasticsearch.address` is reachable
+#   ```
+#   kubectl port-forward service/elasticsearch-master 9200:9200
+#   ```
+#
+# * Loggie Agent DaemonSet installed
+# * Loggie Aggregator StatefulSet installed
+#
+# ------------------------------ ##
+
+resources:
+  genfilesDeployment:
+    name: "loggie-genfiles"
+    namespace: "default"
+    image: <>
+    replicas: 1
+    dir: /tmp/log
+    fileCount: 10
+    lineCount: 10000
+    lineBytes: 1024
+
+  k8sLoggieAggre:
+    statefulSetName: loggie-aggregator
+    namespace: loggie-aggregator
+
+  elasticsearch:
+    address: ["http://elasticsearch-master.default.svc:9200"]
+    index: "log-e2e"
+
+cases:
+  agent2aggr:
+    searchESTimeout: 120s
